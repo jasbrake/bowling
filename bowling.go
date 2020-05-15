@@ -64,8 +64,10 @@ func ScoreGame(game string) int {
 			}
 			total += calcBonus
 		}
-		bonus += additionalBonus
-		additionalBonus = 0
+		if throw <= 20 {
+			bonus += additionalBonus
+			additionalBonus = 0
+		}
 	}
 	return total
 }

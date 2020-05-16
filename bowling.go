@@ -20,8 +20,7 @@ const StrikeScore = 10
 // This function assumes that the game string passed in is a valid game.
 func ScoreGame(game string) int {
 	total := 0
-	// the number of throws so far
-	throw := 0
+	throws := 0
 	// bonus tells us whether we apply a bonus from a previous strike or spare
 	// and will always fall in the range [0,3]
 	bonus := 0
@@ -37,12 +36,12 @@ func ScoreGame(game string) int {
 		case 'X':
 			num = StrikeScore
 			currentThrowBonus = 2
-			throw += 2
+			throws += 2
 			break
 		case '/':
 			num = StrikeScore - prevNumber
 			currentThrowBonus = 1
-			throw++
+			throws++
 			break
 		default:
 			n, err := strconv.Atoi(string(game[i]))
@@ -51,7 +50,7 @@ func ScoreGame(game string) int {
 			}
 			num = n
 			prevNumber = n
-			throw++
+			throws++
 		}
 
 		if bonus > 0 {
@@ -66,7 +65,7 @@ func ScoreGame(game string) int {
 		}
 
 		// bonus throws don't get counted as regular throws
-		if throw <= NormalThrowCount {
+		if throws <= NormalThrowCount {
 			total += num
 			bonus += currentThrowBonus
 		}

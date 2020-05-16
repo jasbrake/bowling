@@ -47,7 +47,7 @@ func ScoreGame(game string) int {
 		default:
 			n, err := strconv.Atoi(string(game[i]))
 			if err != nil {
-				log.Fatalf("'%c' (%U) is an invalid bowling throw", game[i], game[i])
+				log.Fatalf("bowling: invalid throw '%c' (%U): %s", game[i], game[i], err)
 			}
 			num = n
 			prevNumber = n

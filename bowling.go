@@ -27,10 +27,10 @@ func ScoreGame(game string) int {
 	// used to calculate a spare's point value easily
 	prevNumber := 0
 
-	for i := 0; i < len(game); i++ {
+	for _, throw := range game {
 		currentThrowBonus := 0
 		num := 0
-		switch game[i] {
+		switch throw {
 		case '-':
 			continue
 		case 'X':
@@ -44,12 +44,12 @@ func ScoreGame(game string) int {
 			throws++
 			break
 		default:
-			n, err := strconv.Atoi(string(game[i]))
+			var err error
+			num, err = strconv.Atoi(string(throw))
 			if err != nil {
-				log.Fatalf("bowling: invalid throw '%c' (%U): %s", game[i], game[i], err)
+				log.Fatalf("bowling: invalid throw '%c' (%U): %s", throw, throw, err)
 			}
-			num = n
-			prevNumber = n
+			prevNumber = num
 			throws++
 		}
 

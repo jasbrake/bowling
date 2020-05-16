@@ -5,18 +5,26 @@ import (
 	"strconv"
 )
 
+// NormalThrowCount is the number of throws in a game not counting bonus throws
+const NormalThrowCount = 20
+
+// StrikeScore is the number of points a strike is worth
+const StrikeScore = 10
+
 // ScoreGame calculates the final score of a bowling game.
-// The game is passed in as a string of frames separated by a '-' (without
+// The game is passed in as a string of frames each separated by a '-' (without
 // quotation marks). Strikes are represented with an 'X', spares are represented
-// with a '/', and an open frame is two numerical digits.
+// with a '/', and an open frame is two digits representing the number of pins
+// knocked down by the 2 throws in that frame.
+//
 // We assume that the game string passed in is a valid game.
 func ScoreGame(game string) int {
 	total := 0
-	// the number of throws so far. 20 is the last non-bonus throw
+	// the number of throws so far
 	throw := 0
-	// bonus tells us whether we apply a bonus from a strike or spare or not
+	// bonus tells us whether we apply a bonus from a previous strike or spare
 	bonus := 0
-	// store the previous number to calculate the spare value easily
+	// used to calculate a spare's point value easily
 	prevNumber := 0
 
 	for i := 0; i < len(game); i++ {
@@ -25,18 +33,17 @@ func ScoreGame(game string) int {
 			continue
 		}
 
-		// the bonus has to be added later so it doesn't affect this round
-		additionalBonus := 0
+		currentThrowBonus := 0
 		num := 0
 		switch game[i] {
 		case 'X':
-			num = 10
-			additionalBonus = 2
+			num = StrikeScore
+			currentThrowBonus = 2
 			throw += 2
 			break
 		case '/':
-			num = 10 - prevNumber
-			additionalBonus = 1
+			num = StrikeScore - prevNumber
+			currentThrowBonus = 1
 			throw++
 			break
 		default:
@@ -49,24 +56,22 @@ func ScoreGame(game string) int {
 			throw++
 		}
 
-		if throw <= 20 {
-			total += num
-		}
-
 		if bonus > 0 {
-			var calcBonus int
-			if bonus > 2 {
-				calcBonus = 2 * num
+			// there's a 2x bonus if the previous 2 throws were strikes
+			// the bonus counter will only ever be 0, 1, 2, or 3
+			if bonus >= 3 {
+				total += 2 * num
 				bonus -= 2
 			} else {
-				calcBonus = num
+				total += num
 				bonus--
 			}
-			total += calcBonus
 		}
-		if throw <= 20 {
-			bonus += additionalBonus
-			additionalBonus = 0
+
+		// bonus throws don't get counted as regular throws
+		if throw <= NormalThrowCount {
+			total += num
+			bonus += currentThrowBonus
 		}
 	}
 	return total

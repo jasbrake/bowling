@@ -21,6 +21,10 @@ func TestScoreGame(t *testing.T) {
 			game:  "5/-5/-5/-5/-5/-5/-5/-5/-5/-5/-5",
 			score: 150,
 		},
+		{
+			game:  "63-2/-X-5/-71-22-X-X-90-00",
+			score: 135,
+		},
 	}
 
 	for _, test := range tests {

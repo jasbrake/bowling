@@ -1,2 +1,5 @@
-# bowling
-A small program to calculate a final score of a bowling game
+# Bowling
+A small Go program to calculate the final score of a bowling game.
+
+# Run
+Run tests with `go test`.

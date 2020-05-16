@@ -17,7 +17,7 @@ const StrikeScore = 10
 // with a '/', and an open frame is two digits representing the number of pins
 // knocked down by the two throws in that frame.
 //
-// We assume that the game string passed in is a valid game.
+// This function assumes that the game string passed in is a valid game.
 func ScoreGame(game string) int {
 	total := 0
 	// the number of throws so far
@@ -29,14 +29,11 @@ func ScoreGame(game string) int {
 	prevNumber := 0
 
 	for i := 0; i < len(game); i++ {
-		// ignore separation chars
-		if game[i] == '-' {
-			continue
-		}
-
 		currentThrowBonus := 0
 		num := 0
 		switch game[i] {
+		case '-':
+			continue
 		case 'X':
 			num = StrikeScore
 			currentThrowBonus = 2
